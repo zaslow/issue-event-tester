@@ -1,7 +1,5 @@
 name: Open & Close Issue
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 jobs:
   create-issue:
