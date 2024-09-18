@@ -10,30 +10,15 @@ jobs:
     steps:
       - env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
-        name: Create issue
         id: create-issue
-        uses: actions/github-script@v7
+        uses: octokit/request-action@v2.x
         with:
-          script: |
-            const { owner, repo } = context.repo;
-            const { data } = await github.rest.issues.create({
-              owner,
-              repo,
-              title: 'Run Script',
-              body: 'sleep 1m'
-            });
-            return data.number;
-      - env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-        name: Comment on issue
-        id: comment-issue
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { owner, repo } = context.repo;
-            await github.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: ${{ steps.create-issue.outputs.result }},
-              body: 'sleep 30s'
-            });
+          body: |
+            {
+              "body": "sleep 10s",
+              "title": "Run Script"
+            }
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          route: POST /repos/{owner}/{repo}/issues
+      - run: echo ${{ steps.create-issue.outputs.data }}
