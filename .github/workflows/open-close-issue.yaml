@@ -1,0 +1,23 @@
+name: Open & Close Issue
+on:
+  workflow_dispatch:
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: Create issue
+        id: create-issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const { number } = await github.rest.issues.create({
+              owner,
+              repo,
+              title: 'Run Script',
+              body: 'sleep 1m'
+            });
+            return number;
+      - run: echo ${{ steps.create-issue.outputs.result }}

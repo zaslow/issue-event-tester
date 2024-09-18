@@ -1,0 +1,11 @@
+name: Run Script on Issue Creation
+on:
+  issues:
+    types: [opened]
+jobs:
+  run-script:
+    name: Run provided script
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract & run script
+        run: ${{ github.event.issue.body }}
