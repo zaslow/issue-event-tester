@@ -19,6 +19,9 @@ jobs:
           repo: ${{ github.event.repository.name }}
           route: POST /repos/{owner}/{repo}/issues
           title: Run Script
+      - run: |
+          echo ${{ steps.create-issue.outputs.data }}
+          echo ${{ fromJson(steps.create-issue.outputs.data).number }}
       - continue-on-error: true
         id: check-comments
         name: Check for comment
