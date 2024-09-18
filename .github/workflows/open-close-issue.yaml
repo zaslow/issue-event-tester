@@ -14,10 +14,10 @@ jobs:
         uses: octokit/request-action@v2.x
         with:
           body: |
-            {
+            '{
               "body": "sleep 10s",
               "title": "Run Script"
-            }
+            }'
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
           route: POST /repos/{owner}/{repo}/issues
