@@ -10,14 +10,15 @@ jobs:
     steps:
       - env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
+          REQUEST_BODY: |
+            {
+              "body": "sleep 10s",
+              "title": "Run Script"
+            }
         id: create-issue
         uses: octokit/request-action@v2.x
         with:
-          body: |
-            '{
-              "body": "sleep 10s",
-              "title": "Run Script"
-            }'
+          body: ${{ toJson(env.REQUEST_BODY) }}
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
           route: POST /repos/{owner}/{repo}/issues
