@@ -2,12 +2,20 @@ name: Run Script on Issue Creation
 on:
   issues:
     types: [opened]
-  issue_comment:
-    types: [created]
 jobs:
-  run-script:
-    name: Run provided script
+  run-script-comment:
+    name: Run script & comment
     runs-on: ubuntu-latest
     steps:
-      - name: Extract & run script
+      - name: Run provided script
         run: ${{ github.event.issue.body }}
+      - env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        id: comment-issue
+        name: Comment on issue
+        uses: octokit/request-action@v2.x
+        with:
+          body: Script executed successfully
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          route: POST /repos/{owner}/{repo}/issues/${{ github.event.issue.number }}/comments
