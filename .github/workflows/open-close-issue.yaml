@@ -19,8 +19,7 @@ jobs:
           repo: ${{ github.event.repository.name }}
           route: POST /repos/{owner}/{repo}/issues
           title: Run Script
-      - continue-on-error: true
-        id: check-comments
+      - id: check-comments
         name: Check for comment
         uses: nick-fields/retry@v3
         with:
