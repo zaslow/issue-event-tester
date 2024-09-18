@@ -19,9 +19,6 @@ jobs:
           repo: ${{ github.event.repository.name }}
           route: POST /repos/{owner}/{repo}/issues
           title: Run Script
-      - run: |
-          echo ${{ steps.create-issue.outputs.data }}
-          echo ${{ fromJson(steps.create-issue.outputs.data).number }}
       - continue-on-error: true
         id: check-comments
         name: Check for comment
@@ -29,7 +26,7 @@ jobs:
         with:
           command: >
             gh api
-            /repos/${{ github.repository }}/issues/${{ steps.create-issue.outputs.data.number }}/comments
+            /repos/${{ github.repository }}/issues/${{ fromJson(steps.create-issue.outputs.data).number }}/comments
             | jq --exit-status '.[] | select(.body == "Script executed successfully")'
           max_attempts: 5
           retry_on: error
@@ -40,5 +37,5 @@ jobs:
         with:
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
-          route: PATCH /repos/{owner}/{repo}/issues/${{ steps.create-issue.outputs.data.number }}
+          route: PATCH /repos/{owner}/{repo}/issues/${{ fromJson(steps.create-issue.outputs.data).number }}
           state: closed
