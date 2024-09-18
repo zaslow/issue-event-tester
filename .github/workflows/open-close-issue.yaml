@@ -17,6 +17,7 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const { data } = await github.rest.issues.create({
+              assignees: [owner],
               owner,
               repo,
               title: 'Run Script',
